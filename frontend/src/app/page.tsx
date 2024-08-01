@@ -1,10 +1,9 @@
-import Image from 'next/image';
+import DisplayCryptoData from './components/DisplayCryptoData';
 
 export default function Home() {
   return (
-    <main>
-      <h1>Welcome to the Next.js app</h1>
-      <Image src="/favicon.ico" alt="Next.js logo" width={200} height={200} />
-    </main>
+    <div className="p-6">
+      <DisplayCryptoData />
+    </div>
   );
 }

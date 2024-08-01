@@ -1,6 +1,5 @@
-import { Collection, Db, MongoClient, ServerApiVersion } from 'mongodb';
+import { Db, MongoClient, ServerApiVersion } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
-import { CryptoCurrency } from './type';
 
 const uri = 'mongodb+srv://root:Fa7tblgupLkh82fe@mongodb.kwdr3ys.mongodb.net/?retryWrites=true&w=majority&appName=MongoDB';
 const client = new MongoClient(uri, {
@@ -26,6 +25,5 @@ const getCryptoCurrencyData = async (cryptoCode: string) => {
 };
 export const GET = async (_request: NextRequest, { params }: { params: { crypto: string } }) => {
   const cryptCurrencyDetails = await getCryptoCurrencyData(params.crypto);
-  console.log(cryptCurrencyDetails);
   return NextResponse.json(cryptCurrencyDetails);
 };
