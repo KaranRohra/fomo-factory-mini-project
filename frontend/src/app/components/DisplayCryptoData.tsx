@@ -15,7 +15,7 @@ const DisplayCryptoData: FC<IDisplayCryptoData> = () => {
 
   const fetchLatestCryptoData = () => {
     dispatch(setCryptoData(crypto));
-    setTimeout(fetchLatestCryptoData, 5000);
+    setTimeout(fetchLatestCryptoData, 3000);
   };
 
   useEffect(() => {
@@ -24,13 +24,13 @@ const DisplayCryptoData: FC<IDisplayCryptoData> = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">{crypto}</h1> <h6>Note: Data refreshes every 5 seconds</h6>
+      <h1 className="text-2xl font-bold mb-4">{crypto}</h1> <h6>Note: Data refreshes every ~3 seconds</h6>
       <Dropdown
         defaultValue="BTC"
         options={['BTC', 'ETH']}
         onSelect={(selectedCrypto: string) => dispatch(setCryptoData(selectedCrypto))}
       />
-      <Table cryptoData={price.slice(-20)} />
+      <Table cryptoData={price.slice(20)} />
     </div>
   );
 };

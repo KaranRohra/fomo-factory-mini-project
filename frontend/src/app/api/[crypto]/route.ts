@@ -16,7 +16,7 @@ const getCryptoCurrencyData = async (cryptoCode: string) => {
     const db: Db = client.db('fomo-factory');
     const collection = db.collection('crypto-currency');
 
-    return await collection.find({ code: cryptoCode }).sort('fetchedAt').toArray();
+    return await collection.find({ code: cryptoCode }).sort('fetchedAt', -1).toArray();
   } catch (err) {
     console.error('An error occurred:', err);
   } finally {

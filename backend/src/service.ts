@@ -57,5 +57,5 @@ export const updateCryptoCurrencyDetails = async () => {
 
   console.log(`[${new Date()}]: Updated crypto currency details`);
 
-  setTimeout(updateCryptoCurrencyDetails, 5000);
+  setTimeout(updateCryptoCurrencyDetails, 3000);
 };
