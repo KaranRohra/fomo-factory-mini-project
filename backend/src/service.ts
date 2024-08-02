@@ -68,7 +68,7 @@ export const cleanUpDb = async () => {
 
     const sortedDocuments = await collection.find({}).sort({ fetchedAt: -1 }).toArray();
 
-    const remainingIds = sortedDocuments.slice(25).map((doc) => doc._id);
+    const remainingIds = sortedDocuments.slice(150).map((doc) => doc._id);
     if (remainingIds.length > 0) {
       await collection.deleteMany({ _id: { $in: remainingIds } });
       console.log('Cleanup successful: deleted old documents');

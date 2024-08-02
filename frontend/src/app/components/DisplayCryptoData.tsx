@@ -21,6 +21,7 @@ const DisplayCryptoData: FC<IDisplayCryptoData> = ({ cryptoName, cryptoDropdownO
   };
 
   useEffect(() => {
+    dispatch(setCryptoData(cryptoName));
     const interval = setInterval(fetchLatestCryptoData, 5000);
 
     return () => clearInterval(interval);
@@ -34,7 +35,7 @@ const DisplayCryptoData: FC<IDisplayCryptoData> = ({ cryptoName, cryptoDropdownO
         options={cryptoDropdownOptions}
         onSelect={(selectedCrypto: string) => router.push(`/?crypto=${selectedCrypto}`)}
       />
-      <CryptoTable cryptoData={cryptoData} />
+      <CryptoTable cryptoData={cryptoData.slice(0, 20)} />
     </div>
   );
 };
