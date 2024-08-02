@@ -1,38 +1,43 @@
 'use client';
-import { FC, useEffect } from 'react';
+import { FC, memo, useEffect } from 'react';
 
+import { useRouter } from 'next/navigation';
+import CryptoTable from './CryptoTable';
+import Dropdown from './Dropdown';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setCryptoData } from '@/store/slice';
-import { AppDispatch, RootState } from '@/store/store';
-import Dropdown from './Dropdown';
-import Table from './Table';
 
-interface IDisplayCryptoData {}
+interface IDisplayCryptoData {
+  cryptoName: string;
+  cryptoDropdownOptions: string[];
+}
 
-const DisplayCryptoData: FC<IDisplayCryptoData> = () => {
-  const { crypto, price } = useAppSelector((state: RootState) => state.crypto);
-  const dispatch = useAppDispatch<AppDispatch>();
-
+const DisplayCryptoData: FC<IDisplayCryptoData> = ({ cryptoName, cryptoDropdownOptions }) => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const cryptoData = useAppSelector((state) => state.crypto);
   const fetchLatestCryptoData = () => {
-    dispatch(setCryptoData(crypto));
-    setTimeout(fetchLatestCryptoData, 3000);
+    dispatch(setCryptoData(cryptoName));
   };
 
   useEffect(() => {
-    fetchLatestCryptoData();
+    dispatch(setCryptoData(cryptoName));
+    const interval = setInterval(fetchLatestCryptoData, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">{crypto}</h1> <h6>Note: Data refreshes every ~3 seconds</h6>
+      <h1 className="text-2xl font-bold mb-4">{cryptoName}</h1> <h6>Note: Data refreshes every ~5 seconds</h6>
       <Dropdown
-        defaultValue="BTC"
-        options={['BTC', 'ETH']}
-        onSelect={(selectedCrypto: string) => dispatch(setCryptoData(selectedCrypto))}
+        defaultValue={cryptoName}
+        options={cryptoDropdownOptions}
+        onSelect={(selectedCrypto: string) => router.push(`/?crypto=${selectedCrypto}`)}
       />
-      <Table cryptoData={price.slice(20)} />
+      <CryptoTable cryptoData={cryptoData.slice(0, 20)} />
     </div>
   );
 };
 
-export default DisplayCryptoData;
+export default memo(DisplayCryptoData);

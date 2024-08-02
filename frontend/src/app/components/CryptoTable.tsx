@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export type CryptoCurrency = {
   code: string;
   rate: number;
@@ -6,11 +8,11 @@ export type CryptoCurrency = {
   fetchedAt: number;
 };
 
-interface TableProps {
+interface ICryptoTableProps {
   cryptoData: CryptoCurrency[];
 }
 
-const Table: React.FC<TableProps> = ({ cryptoData }) => {
+const CryptoTable: React.FC<ICryptoTableProps> = ({ cryptoData }) => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg shadow-md">
@@ -35,7 +37,7 @@ const Table: React.FC<TableProps> = ({ cryptoData }) => {
             <tr key={index} className="hover:bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 border-r border-gray-300">{index + 1}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 border-r border-gray-300">
-                {new Date(item.fetchedAt).toLocaleString()}
+                {dayjs(item.fetchedAt).format('DD/MM/YYYY HH:mm:ss')}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r border-gray-300">{item.rate}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{item.volume}</td>
@@ -47,4 +49,4 @@ const Table: React.FC<TableProps> = ({ cryptoData }) => {
   );
 };
 
-export default Table;
+export default CryptoTable;

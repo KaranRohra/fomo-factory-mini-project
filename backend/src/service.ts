@@ -57,5 +57,27 @@ export const updateCryptoCurrencyDetails = async () => {
 
   console.log(`[${new Date()}]: Updated crypto currency details`);
 
-  setTimeout(updateCryptoCurrencyDetails, 3000);
+  setTimeout(updateCryptoCurrencyDetails, 5000);
+};
+
+export const cleanUpDb = async () => {
+  try {
+    await client.connect();
+    const db: Db = client.db('fomo-factory');
+    const collection = db.collection('crypto-currency');
+
+    const sortedDocuments = await collection.find({}).sort({ fetchedAt: -1 }).toArray();
+
+    const remainingIds = sortedDocuments.slice(150).map((doc) => doc._id);
+    if (remainingIds.length > 0) {
+      await collection.deleteMany({ _id: { $in: remainingIds } });
+      console.log('Cleanup successful: deleted old documents');
+    } else {
+      console.log('Cleanup successful: no documents to delete');
+    }
+  } catch (err) {
+    console.error('Error cleaning up data:', err);
+  } finally {
+    await client.close();
+  }
 };
